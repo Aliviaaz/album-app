@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Vibes" %>
+
+<h1>Vibes</h1>
+
+<div id="vibes">
+  <% @vibes.each do |vibe| %>
+    <%= render vibe %>
+    <p>
+      <%= link_to "Show this vibe", vibe %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New vibe", new_vibe_path %>
