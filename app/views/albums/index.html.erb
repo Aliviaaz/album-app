@@ -1,16 +1,21 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Albums" %>
 
-<h1>Albums</h1>
+<% content_for :page_actions do %>
+  <%= link_to "New album", new_album_path, class: button_classes(:primary) %>
+<% end %>
 
-<div id="albums">
-  <% @albums.each do |album| %>
-    <%= render album %>
-    <p>
-      <%= link_to "Show this album", album %>
-    </p>
-  <% end %>
-</div>
+<%= render "shared/page_header", title: "Albums", subtitle: "Your record collection" %>
 
-<%= link_to "New album", new_album_path %>
+<% if @albums.any? %>
+  <div id="albums" class="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
+    <%= render @albums %>
+  </div>
+<% else %>
+  <div id="albums">
+    <%= render "shared/empty_state",
+          title: "No albums yet",
+          message: "Get started by adding your first album.",
+          action_label: "New album",
+          action_path: new_album_path %>
+  </div>
+<% end %>

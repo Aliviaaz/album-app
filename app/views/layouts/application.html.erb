@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full bg-slate-50">
   <head>
     <title><%= content_for(:title) || "Albumapp" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -23,8 +23,26 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="h-full font-sans text-slate-900 antialiased">
+    <header class="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
+      <nav class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        <%= link_to root_path, class: "flex items-center gap-2 text-lg font-bold tracking-tight text-slate-900" do %>
+          <span class="flex size-8 items-center justify-center rounded-lg bg-indigo-600 text-white" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </span>
+          Alivia's Album App
+        <% end %>
+
+        <div class="flex items-center gap-1">
+          <% TailwindHelper::NAV_ITEMS.each do |label, path_helper, section| %>
+            <%= nav_link label, public_send(path_helper), section %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
+      <%= render "shared/flash" %>
       <%= yield %>
     </main>
   </body>

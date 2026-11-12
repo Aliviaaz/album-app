@@ -1,12 +1,10 @@
-<div id="<%= dom_id artist %>">
-  <div>
-    <strong>Name:</strong>
-    <%= artist.name %>
-  </div>
-
-  <div>
-    <strong>Is group:</strong>
-    <%= artist.is_group %>
-  </div>
-
-</div>
+<li id="<%= dom_id artist %>">
+  <%= link_to artist, class: "flex items-center gap-4 px-4 py-4 transition-colors hover:bg-slate-50 sm:px-6" do %>
+    <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-linear-to-br text-sm font-bold text-white <%= cover_gradient(artist) %>">
+      <%= initials(artist.name) %>
+    </span>
+    <span class="min-w-0 flex-1 truncate font-semibold text-slate-900"><%= artist.name %></span>
+    <%= render "artists/kind_badge", artist: artist %>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 shrink-0 text-slate-400" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+  <% end %>
+</li>

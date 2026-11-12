@@ -1,10 +1,22 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @artist.name %>
 
-<%= render @artist %>
+<%= render "shared/page_header", title: @artist.name, back: { label: "All artists", path: artists_path } %>
 
-<div>
-  <%= link_to "Edit this artist", edit_artist_path(@artist) %> |
-  <%= link_to "Back to artists", artists_path %>
+<%= render "shared/detail_card", record: @artist, delete_label: "Delete artist" do %>
+  <div id="<%= dom_id @artist %>" class="flex flex-col gap-6 sm:flex-row sm:items-center">
+    <span class="flex size-24 shrink-0 items-center justify-center rounded-full bg-linear-to-br text-3xl font-bold text-white shadow-inner <%= cover_gradient(@artist) %>">
+      <%= initials(@artist.name) %>
+    </span>
 
-  <%= button_to "Destroy this artist", @artist, method: :delete %>
-</div>
+    <dl class="grid flex-1 gap-4 sm:grid-cols-2">
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Name</dt>
+        <dd class="mt-1 text-base font-semibold text-slate-900"><%= @artist.name %></dd>
+      </div>
+      <div>
+        <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Type</dt>
+        <dd class="mt-1"><%= render "artists/kind_badge", artist: @artist %></dd>
+      </div>
+    </dl>
+  </div>
+<% end %>

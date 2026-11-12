@@ -1,10 +1,43 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @song.name %>
 
-<%= render @song %>
+<%= render "shared/page_header", title: @song.name, back: { label: "All songs", path: songs_path } %>
 
-<div>
-  <%= link_to "Edit this song", edit_song_path(@song) %> |
-  <%= link_to "Back to songs", songs_path %>
+<%= render "shared/detail_card", record: @song, delete_label: "Delete song" do %>
+  <dl id="<%= dom_id @song %>" class="grid gap-6 sm:grid-cols-3">
+    <div>
+      <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Name</dt>
+      <dd class="mt-1 text-base font-semibold text-slate-900"><%= @song.name %></dd>
+    </div>
+    <div>
+      <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Album</dt>
+      <dd class="mt-1 text-base">
+        <% if @song.album %>
+          <%= link_to @song.album.title, @song.album, class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+        <% else %>
+          <span class="text-slate-400">None</span>
+        <% end %>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Favorite</dt>
+      <dd class="mt-1 text-base">
+        <% if @song.is_favorite %>
+          <span class="font-medium text-rose-600"><span aria-hidden="true">&hearts;</span> Yes</span>
+        <% else %>
+          <span class="text-slate-500">No</span>
+        <% end %>
+      </dd>
+    </div>
 
-  <%= button_to "Destroy this song", @song, method: :delete %>
-</div>
+    <% if @song.vibes.any? %>
+      <div class="sm:col-span-3">
+        <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Vibes</dt>
+        <dd class="mt-2 flex flex-wrap gap-2">
+          <% @song.vibes.each do |vibe| %>
+            <%= link_to vibe.name, vibe, class: "rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700 ring-1 ring-inset ring-indigo-600/20 hover:bg-indigo-100" %>
+          <% end %>
+        </dd>
+      </div>
+    <% end %>
+  </dl>
+<% end %>

@@ -1,7 +1,9 @@
-<div id="<%= dom_id album %>">
-  <div>
-    <strong>Title:</strong>
-    <%= album.title %>
+<%= link_to album, id: dom_id(album), class: "group block overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+  <div class="flex aspect-square items-center justify-center bg-linear-to-br <%= cover_gradient(album) %>">
+    <span class="text-5xl font-black tracking-tight text-white/90 drop-shadow-sm"><%= initials(album.title) %></span>
   </div>
-
-</div>
+  <div class="p-4">
+    <h3 class="truncate font-semibold text-slate-900 group-hover:text-indigo-600"><%= album.title %></h3>
+    <p class="mt-0.5 truncate text-sm text-slate-500"><%= album.artist&.name || "Unknown artist" %></p>
+  </div>
+<% end %>

@@ -1,16 +1,21 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Artists" %>
 
-<h1>Artists</h1>
+<% content_for :page_actions do %>
+  <%= link_to "New artist", new_artist_path, class: button_classes(:primary) %>
+<% end %>
 
-<div id="artists">
-  <% @artists.each do |artist| %>
-    <%= render artist %>
-    <p>
-      <%= link_to "Show this artist", artist %>
-    </p>
-  <% end %>
-</div>
+<%= render "shared/page_header", title: "Artists", subtitle: "Solo acts and groups" %>
 
-<%= link_to "New artist", new_artist_path %>
+<% if @artists.any? %>
+  <ul id="artists" role="list" class="divide-y divide-slate-100 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+    <%= render @artists %>
+  </ul>
+<% else %>
+  <div id="artists">
+    <%= render "shared/empty_state",
+          title: "No artists yet",
+          message: "Add an artist to start building your collection.",
+          action_label: "New artist",
+          action_path: new_artist_path %>
+  </div>
+<% end %>

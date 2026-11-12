@@ -1,10 +1,25 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @vibe.name %>
 
-<%= render @vibe %>
+<%= render "shared/page_header", title: @vibe.name, back: { label: "All vibes", path: vibes_path } %>
 
-<div>
-  <%= link_to "Edit this vibe", edit_vibe_path(@vibe) %> |
-  <%= link_to "Back to vibes", vibes_path %>
+<%= render "shared/detail_card", record: @vibe, delete_label: "Delete vibe" do %>
+  <div id="<%= dom_id @vibe %>">
+    <div class="flex items-center gap-3">
+      <span class="size-4 rounded-full bg-linear-to-br <%= cover_gradient(@vibe) %>" aria-hidden="true"></span>
+      <span class="text-lg font-semibold text-slate-900"><%= @vibe.name %></span>
+    </div>
 
-  <%= button_to "Destroy this vibe", @vibe, method: :delete %>
-</div>
+    <h2 class="mt-6 text-xs font-medium uppercase tracking-wide text-slate-500">Songs with this vibe</h2>
+    <% if @vibe.songs.any? %>
+      <ul class="mt-2 divide-y divide-slate-100 rounded-lg ring-1 ring-slate-200">
+        <% @vibe.songs.each do |song| %>
+          <li>
+            <%= link_to song.name, song, class: "block px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-2 text-sm text-slate-400">No songs tagged with this vibe yet.</p>
+    <% end %>
+  </div>
+<% end %>
