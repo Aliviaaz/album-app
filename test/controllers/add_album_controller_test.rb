@@ -1,8 +1,15 @@
 require "test_helper"
 
 class AddAlbumControllerTest < ActionDispatch::IntegrationTest
+  # Every test gets a fake fetcher (empty tracklist) so none calls the real model.
   setup do
     @cover = fixture_file_upload("cover.png", "image/png")
+    @original_fetch = AlbumTracklistFetcher.method(:call)
+    AlbumTracklistFetcher.define_singleton_method(:call, ->(_) { [] })
+  end
+
+  teardown do
+    AlbumTracklistFetcher.define_singleton_method(:call, @original_fetch)
   end
 
   test "should get add-album page" do
@@ -56,6 +63,28 @@ class AddAlbumControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_content
   end
 
+  test "saves songs from the tracklist fetcher" do
+    with_recognizer(->(_) { AlbumCoverRecognizer::Result.new(artist_name: "Miles Davis", album_title: "Kind of Blue") }) do
+      with_fetcher(->(_) { [ "So What", "Freddie Freeloader" ] }) do
+        assert_difference("Song.count", 2) { post add_album_url, params: { album: { cover_image: @cover } } }
+      end
+    end
+    assert_equal [ "So What", "Freddie Freeloader" ], Album.last.songs.order(:id).pluck(:name)
+    assert_match "Found 2 songs", flash[:notice]
+  end
+
+  test "keeps the album when the tracklist can't be found" do
+    with_recognizer(->(_) { AlbumCoverRecognizer::Result.new(artist_name: "Miles Davis", album_title: "Kind of Blue") }) do
+      with_fetcher(->(_) { raise AlbumTracklistFetcher::LookupError, "Couldn't find a tracklist" }) do
+        assert_difference("Album.count", 1) do
+          assert_no_difference("Song.count") { post add_album_url, params: { album: { cover_image: @cover } } }
+        end
+      end
+    end
+    assert_redirected_to album_url(Album.last)
+    assert_match "Couldn't find a tracklist", flash[:notice]
+  end
+
   private
     def with_recognizer(fake)
       original = AlbumCoverRecognizer.method(:call)
@@ -63,5 +92,12 @@ class AddAlbumControllerTest < ActionDispatch::IntegrationTest
       yield
     ensure
       AlbumCoverRecognizer.define_singleton_method(:call, original)
+    end
+
+    def with_fetcher(fake)
+      AlbumTracklistFetcher.define_singleton_method(:call, &fake)
+      yield
+    ensure
+      AlbumTracklistFetcher.define_singleton_method(:call, ->(_) { [] })
     end
 end

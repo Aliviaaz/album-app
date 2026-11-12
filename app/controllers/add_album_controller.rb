@@ -24,8 +24,22 @@ class AddAlbumController < ApplicationController
       @album = Album.create!(title: result.album_title, artist: artist)
     end
 
+    # The album is kept even if the tracklist lookup fails. The model call
+    # happens outside any DB transaction so it doesn't hold a lock.
+    notice = "Added \"#{@album.title}\" by #{@album.artist.name}."
+    begin
+      song_names = AlbumTracklistFetcher.call(@album)
+      # puts song_names
+      Song.transaction do
+        song_names.each { |name| @album.songs.create!(name: name) }
+      end
+      notice += " Found #{song_names.size} #{"song".pluralize(song_names.size)}."
+    rescue AlbumTracklistFetcher::LookupError => e
+      notice += " #{e.message}"
+    end
+
     respond_to do |format|
-      format.html { redirect_to @album, notice: "Added \"#{@album.title}\" by #{@album.artist.name}." }
+      format.html { redirect_to @album, notice: notice }
       format.json { render "albums/show", status: :created, location: @album }
     end
   rescue AlbumCoverRecognizer::RecognitionError => e
