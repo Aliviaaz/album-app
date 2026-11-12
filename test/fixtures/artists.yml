@@ -1,9 +1,0 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-day6:
-  name: Day6
-  is_group: true
-
-two:
-  name: MyString
-  is_group: false
