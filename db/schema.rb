@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_201646) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_213307) do
   create_table "album_vibes", force: :cascade do |t|
     t.integer "album_id", null: false
     t.integer "vibe_id", null: false
@@ -46,7 +46,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_201646) do
 
   create_table "songs", force: :cascade do |t|
     t.string "name"
-    t.boolean "is_favorite"
+    t.boolean "is_favorite", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "album_id", null: false
