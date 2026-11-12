@@ -13,6 +13,25 @@
           { class: input_classes } %>
   </div>
 
+  <div class="space-y-2"
+       data-controller="vibe-autocomplete"
+       data-vibe-autocomplete-vibes-value="<%= Vibe.order(:name).pluck(:name).to_json %>">
+    <%= form.label :vibe_list, "Vibes", class: label_classes %>
+    <div class="relative">
+      <%= form.text_field :vibe_list, class: input_classes,
+            placeholder: %("late night" "chill" upbeat),
+            autocomplete: "off",
+            role: "combobox",
+            aria: { autocomplete: "list", expanded: "false", controls: "vibe-suggestions" },
+            data: { vibe_autocomplete_target: "input",
+                    action: "input->vibe-autocomplete#update keydown->vibe-autocomplete#navigate blur->vibe-autocomplete#hide" } %>
+      <ul id="vibe-suggestions" role="listbox" hidden
+          data-vibe-autocomplete-target="list"
+          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white py-1 text-sm shadow-lg ring-1 ring-slate-200"></ul>
+    </div>
+    <p class="text-sm text-slate-500">Separate vibes with spaces; wrap multi-word vibes in quotes. New vibes are created automatically.</p>
+  </div>
+
   <div class="flex items-start gap-3">
     <div class="flex h-6 items-center">
       <%= form.checkbox :is_favorite, class: checkbox_classes %>
