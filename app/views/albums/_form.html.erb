@@ -6,6 +6,13 @@
     <%= form.text_field :title, class: input_classes, placeholder: "e.g. Kind of Blue", autofocus: true %>
   </div>
 
+  <div class="space-y-2">
+    <%= form.label :artist_id, "Artist", class: label_classes %>
+    <%= form.collection_select :artist_id, Artist.order(:name), :id, :name,
+          { prompt: "Select an artist" },
+          { class: input_classes } %>
+  </div>
+
   <div class="flex items-center justify-end gap-3 border-t border-slate-200 pt-6">
     <%= link_to "Cancel", (album.persisted? ? album : albums_path), class: button_classes(:secondary) %>
     <%= form.submit class: button_classes(:primary) %>

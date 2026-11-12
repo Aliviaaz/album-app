@@ -6,6 +6,13 @@
     <%= form.text_field :name, class: input_classes, placeholder: "e.g. So What", autofocus: true %>
   </div>
 
+  <div class="space-y-2">
+    <%= form.label :album_id, "Album", class: label_classes %>
+    <%= form.collection_select :album_id, Album.order(:title), :id, :title,
+          { prompt: "Select an album" },
+          { class: input_classes } %>
+  </div>
+
   <div class="flex items-start gap-3">
     <div class="flex h-6 items-center">
       <%= form.checkbox :is_favorite, class: checkbox_classes %>
