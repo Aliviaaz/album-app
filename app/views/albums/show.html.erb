@@ -4,9 +4,14 @@
 
 <%= render "shared/detail_card", record: @album, delete_label: "Delete album" do %>
   <div id="<%= dom_id @album %>" class="flex flex-col gap-6 sm:flex-row sm:items-start">
-    <div class="flex size-40 shrink-0 items-center justify-center rounded-xl bg-linear-to-br shadow-inner <%= cover_gradient(@album) %>">
-      <span class="text-5xl font-black text-white/90"><%= initials(@album.title) %></span>
-    </div>
+    <% if @album.image_url.attached? %>
+      <%= image_tag @album.image_url, alt: "#{@album.title} cover",
+            class: "size-40 shrink-0 rounded-xl object-cover shadow-sm ring-1 ring-slate-200" %>
+    <% else %>
+      <div class="flex size-40 shrink-0 items-center justify-center rounded-xl bg-linear-to-br shadow-inner <%= cover_gradient(@album) %>">
+        <span class="text-5xl font-black text-white/90"><%= initials(@album.title) %></span>
+      </div>
+    <% end %>
 
     <div class="min-w-0 flex-1">
       <dl class="grid gap-4 sm:grid-cols-2">

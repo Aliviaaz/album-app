@@ -18,10 +18,13 @@ class AddAlbumController < ApplicationController
 
     result = AlbumCoverRecognizer.call(image)
 
+    # The recognizer may have read the upload; rewind so the full file is stored.
+    image.rewind if image.respond_to?(:rewind)
+
     Album.transaction do
       artist = Artist.where("LOWER(name) = ?", result.artist_name.downcase).first ||
                Artist.create!(name: result.artist_name)
-      @album = Album.create!(title: result.album_title, artist: artist)
+      @album = Album.create!(title: result.album_title, artist: artist, image_url: image)
     end
 
     # The album is kept even if the tracklist lookup fails. The model call
