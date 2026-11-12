@@ -51,8 +51,6 @@ RSpec.describe "/vibes", type: :request do
 
   describe "DELETE /destroy" do
     it "destroys the vibe and redirects to the list" do
-      pending "Vibe has_and_belongs_to_many :albums expects an albums_vibes table, but the schema has album_vibes"
-
       expect {
         delete vibe_url(vibe)
       }.to change(Vibe, :count).by(-1)

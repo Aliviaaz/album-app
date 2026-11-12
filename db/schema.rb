@@ -10,22 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_213307) do
-  create_table "album_vibes", force: :cascade do |t|
-    t.integer "album_id", null: false
-    t.integer "vibe_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["album_id"], name: "index_album_vibes_on_album_id"
-    t.index ["vibe_id"], name: "index_album_vibes_on_vibe_id"
-  end
-
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_215540) do
   create_table "albums", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "artist_id", null: false
     t.index ["artist_id"], name: "index_albums_on_artist_id"
+  end
+
+  create_table "albums_vibes", force: :cascade do |t|
+    t.integer "album_id", null: false
+    t.integer "vibe_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["album_id"], name: "index_albums_vibes_on_album_id"
+    t.index ["vibe_id"], name: "index_albums_vibes_on_vibe_id"
   end
 
   create_table "artists", force: :cascade do |t|
