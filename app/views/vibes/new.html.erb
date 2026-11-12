@@ -1,11 +1,5 @@
 <% content_for :title, "New vibe" %>
 
-<h1>New vibe</h1>
+<%= render "shared/page_header", title: "New vibe", back: { label: "All vibes", path: vibes_path } %>
 
 <%= render "form", vibe: @vibe %>
-
-<br>
-
-<div>
-  <%= link_to "Back to vibes", vibes_path %>
-</div>

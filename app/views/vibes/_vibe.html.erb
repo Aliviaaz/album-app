@@ -1,7 +1,4 @@
-<div id="<%= dom_id vibe %>">
-  <div>
-    <strong>Name:</strong>
-    <%= vibe.name %>
-  </div>
-
-</div>
+<%= link_to vibe, id: dom_id(vibe), class: "group flex items-center gap-3 rounded-xl bg-white px-4 py-3 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-indigo-300" do %>
+  <span class="size-3 shrink-0 rounded-full bg-linear-to-br <%= cover_gradient(vibe) %>" aria-hidden="true"></span>
+  <span class="truncate font-medium text-slate-900 group-hover:text-indigo-600"><%= vibe.name %></span>
+<% end %>

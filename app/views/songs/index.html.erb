@@ -1,16 +1,21 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Songs" %>
 
-<h1>Songs</h1>
+<% content_for :page_actions do %>
+  <%= link_to "New song", new_song_path, class: button_classes(:primary) %>
+<% end %>
 
-<div id="songs">
-  <% @songs.each do |song| %>
-    <%= render song %>
-    <p>
-      <%= link_to "Show this song", song %>
-    </p>
-  <% end %>
-</div>
+<%= render "shared/page_header", title: "Songs", subtitle: "Every track across your albums" %>
 
-<%= link_to "New song", new_song_path %>
+<% if @songs.any? %>
+  <ul id="songs" role="list" class="divide-y divide-slate-100 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+    <%= render @songs %>
+  </ul>
+<% else %>
+  <div id="songs">
+    <%= render "shared/empty_state",
+          title: "No songs yet",
+          message: "Add a song to one of your albums.",
+          action_label: "New song",
+          action_path: new_song_path %>
+  </div>
+<% end %>

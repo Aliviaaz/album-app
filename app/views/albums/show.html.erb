@@ -1,10 +1,51 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @album.title %>
 
-<%= render @album %>
+<%= render "shared/page_header", title: @album.title, back: { label: "All albums", path: albums_path } %>
 
-<div>
-  <%= link_to "Edit this album", edit_album_path(@album) %> |
-  <%= link_to "Back to albums", albums_path %>
+<%= render "shared/detail_card", record: @album, delete_label: "Delete album" do %>
+  <div id="<%= dom_id @album %>" class="flex flex-col gap-6 sm:flex-row sm:items-start">
+    <div class="flex size-40 shrink-0 items-center justify-center rounded-xl bg-linear-to-br shadow-inner <%= cover_gradient(@album) %>">
+      <span class="text-5xl font-black text-white/90"><%= initials(@album.title) %></span>
+    </div>
 
-  <%= button_to "Destroy this album", @album, method: :delete %>
-</div>
+    <div class="min-w-0 flex-1">
+      <dl class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Title</dt>
+          <dd class="mt-1 text-base font-semibold text-slate-900"><%= @album.title %></dd>
+        </div>
+        <div>
+          <dt class="text-xs font-medium uppercase tracking-wide text-slate-500">Artist</dt>
+          <dd class="mt-1 text-base text-slate-900">
+            <% if @album.artist %>
+              <%= link_to @album.artist.name, @album.artist, class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+            <% else %>
+              <span class="text-slate-400">Unknown</span>
+            <% end %>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="mt-6">
+        <h2 class="text-xs font-medium uppercase tracking-wide text-slate-500">Tracks</h2>
+        <% if @album.songs.any? %>
+          <ol class="mt-2 divide-y divide-slate-100 rounded-lg ring-1 ring-slate-200">
+            <% @album.songs.each_with_index do |song, i| %>
+              <li>
+                <%= link_to song, class: "flex items-center gap-3 px-3 py-2 text-sm hover:bg-slate-50" do %>
+                  <span class="w-5 text-right tabular-nums text-slate-400"><%= i + 1 %></span>
+                  <span class="flex-1 truncate font-medium text-slate-900"><%= song.name %></span>
+                  <% if song.is_favorite %>
+                    <span class="text-rose-500" title="Favorite" aria-label="Favorite">&hearts;</span>
+                  <% end %>
+                <% end %>
+              </li>
+            <% end %>
+          </ol>
+        <% else %>
+          <p class="mt-2 text-sm text-slate-400">No tracks on this album yet.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

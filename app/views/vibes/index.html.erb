@@ -1,16 +1,21 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Vibes" %>
 
-<h1>Vibes</h1>
+<% content_for :page_actions do %>
+  <%= link_to "New vibe", new_vibe_path, class: button_classes(:primary) %>
+<% end %>
 
-<div id="vibes">
-  <% @vibes.each do |vibe| %>
-    <%= render vibe %>
-    <p>
-      <%= link_to "Show this vibe", vibe %>
-    </p>
-  <% end %>
-</div>
+<%= render "shared/page_header", title: "Vibes", subtitle: "Moods and feelings to tag your music with" %>
 
-<%= link_to "New vibe", new_vibe_path %>
+<% if @vibes.any? %>
+  <div id="vibes" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+    <%= render @vibes %>
+  </div>
+<% else %>
+  <div id="vibes">
+    <%= render "shared/empty_state",
+          title: "No vibes yet",
+          message: "Create a vibe like “chill” or “late night” to tag songs.",
+          action_label: "New vibe",
+          action_path: new_vibe_path %>
+  </div>
+<% end %>

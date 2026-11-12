@@ -1,27 +1,23 @@
-<%= form_with(model: artist) do |form| %>
-  <% if artist.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(artist.errors.count, "error") %> prohibited this artist from being saved:</h2>
+<%= form_with(model: artist, class: "max-w-xl space-y-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8") do |form| %>
+  <%= render "shared/form_errors", record: artist %>
 
-      <ul>
-        <% artist.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <div class="space-y-2">
+    <%= form.label :name, class: label_classes %>
+    <%= form.text_field :name, class: input_classes, placeholder: "e.g. Miles Davis", autofocus: true %>
+  </div>
+
+  <div class="flex items-start gap-3">
+    <div class="flex h-6 items-center">
+      <%= form.checkbox :is_group, class: checkbox_classes %>
     </div>
-  <% end %>
-
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+    <div class="text-sm">
+      <%= form.label :is_group, "This artist is a group", class: "font-medium text-slate-900" %>
+      <p class="text-slate-500">Bands, duos, ensembles, and other multi-member acts.</p>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :is_group, style: "display: block" %>
-    <%= form.checkbox :is_group %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="flex items-center justify-end gap-3 border-t border-slate-200 pt-6">
+    <%= link_to "Cancel", (artist.persisted? ? artist : artists_path), class: button_classes(:secondary) %>
+    <%= form.submit class: button_classes(:primary) %>
   </div>
 <% end %>

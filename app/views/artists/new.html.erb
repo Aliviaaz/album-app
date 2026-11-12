@@ -1,11 +1,5 @@
 <% content_for :title, "New artist" %>
 
-<h1>New artist</h1>
+<%= render "shared/page_header", title: "New artist", back: { label: "All artists", path: artists_path } %>
 
 <%= render "form", artist: @artist %>
-
-<br>
-
-<div>
-  <%= link_to "Back to artists", artists_path %>
-</div>
