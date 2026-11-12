@@ -1,0 +1,21 @@
+<% content_for :title, "Add album" %>
+
+<%= render "shared/page_header", title: "Add album",
+      subtitle: "Upload a photo of an album cover and we'll identify the artist and title.",
+      back: { label: "All albums", path: albums_path } %>
+
+<%= form_with(model: @album, url: add_album_path, multipart: true, class: "max-w-xl space-y-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8") do |form| %>
+  <%= render "shared/form_errors", record: @album %>
+
+  <div class="space-y-2">
+    <%= form.label :cover_image, "Album cover", class: label_classes %>
+    <%= form.file_field :cover_image, accept: "image/jpeg,image/png,image/gif,image/webp", required: true,
+          class: "block w-full text-sm text-slate-700 file:mr-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100" %>
+    <p class="text-xs text-slate-500">JPEG, PNG, GIF, or WebP, up to 5 MB.</p>
+  </div>
+
+  <div class="flex items-center justify-end gap-3 border-t border-slate-200 pt-6">
+    <%= link_to "Cancel", albums_path, class: button_classes(:secondary) %>
+    <%= form.submit "Identify & add album", class: button_classes(:primary), data: { turbo_submits_with: "Identifying…" } %>
+  </div>
+<% end %>
