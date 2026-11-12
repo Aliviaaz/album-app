@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "/songs", type: :request do
   let!(:song) { create(:song) }
-  let(:valid_attributes) { attributes_for(:song) }
+  let(:valid_attributes) { attributes_for(:song).merge(album_id: song.album_id) }
 
   describe "GET /index" do
     it "renders a successful response" do
@@ -20,8 +20,6 @@ RSpec.describe "/songs", type: :request do
 
   describe "POST /create" do
     it "creates a new Song and redirects to it" do
-      pending "SongsController does not permit album_id, so a song cannot be created through the form"
-
       expect {
         post songs_url, params: { song: valid_attributes }
       }.to change(Song, :count).by(1)

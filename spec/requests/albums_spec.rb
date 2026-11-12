@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "/albums", type: :request do
   let!(:album) { create(:album) }
-  let(:valid_attributes) { attributes_for(:album) }
+  let(:valid_attributes) { attributes_for(:album).merge(artist_id: album.artist_id) }
 
   describe "GET /index" do
     it "renders a successful response" do
@@ -20,8 +20,6 @@ RSpec.describe "/albums", type: :request do
 
   describe "POST /create" do
     it "creates a new Album and redirects to it" do
-      pending "AlbumsController does not permit artist_id, so an album cannot be created through the form"
-
       expect {
         post albums_url, params: { album: valid_attributes }
       }.to change(Album, :count).by(1)
@@ -53,8 +51,6 @@ RSpec.describe "/albums", type: :request do
 
   describe "DELETE /destroy" do
     it "destroys the album and redirects to the list" do
-      pending "There's a bad join table that needs to be renamed"
-
       expect {
         delete album_url(album)
       }.to change(Album, :count).by(-1)

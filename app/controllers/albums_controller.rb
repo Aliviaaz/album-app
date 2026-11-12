@@ -65,6 +65,6 @@ class AlbumsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def album_params
-      params.expect(album: [ :title ])
+      params.expect(album: [ :title, :artist_id ])
     end
 end
